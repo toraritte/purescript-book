@@ -34,7 +34,7 @@ Assuming you have cloned the book's source code repository, the project for this
 
 ```text
 $ cd chapter3
-$ psc-package install 
+$ psc-package install
 $ psc-package build
 ```
 
@@ -274,6 +274,29 @@ If we try to incorrectly define a value of type `List` (by using the type annota
 > Nil :: List
 In a type-annotated expression x :: t, the type t must have kind Type
 ```
+
+> NOTE 2018-12-15
+>
+> But these will work:
+>
+> ```text
+> > Nil :: List Int
+> Nil
+>
+> > :paste
+> … h :: List Char
+> … h = Nil
+> …
+> > h
+> Nil
+>
+> > :paste
+> … g :: forall a. List a
+> … g = Nil
+> …
+> > (g) :: List Int
+> Nil
+> ```
 
 This is a _kind error_. Just like values are distinguished by their _types_, types are distinguished by their _kinds_, and just like ill-typed values result in _type errors_, _ill-kinded_ types result in _kind errors_.
 
