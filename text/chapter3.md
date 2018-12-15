@@ -275,7 +275,7 @@ If we try to incorrectly define a value of type `List` (by using the type annota
 In a type-annotated expression x :: t, the type t must have kind Type
 ```
 
-> NOTE 2018-12-15
+> NOTE 2018-12-15_1342
 >
 > But these will work:
 >
@@ -301,6 +301,17 @@ In a type-annotated expression x :: t, the type t must have kind Type
 This is a _kind error_. Just like values are distinguished by their _types_, types are distinguished by their _kinds_, and just like ill-typed values result in _type errors_, _ill-kinded_ types result in _kind errors_.
 
 There is a special kind called `Type` which represents the kind of all types which have values, like `Number` and `String`.
+
+> NOTE 2018-12-15_1352
+>
+> https://pursuit.purescript.org/builtins/docs/Prim#k:Type
+>
+> > kind Type
+> > =========
+> > `Type` (also known  as *) is the kind  of all proper
+> > types:  those that  classify value-level  terms. For
+> > example the type `Boolean`  has kind `Type`; denoted
+> > by `Boolean :: Type`.
 
 There are also kinds for type constructors. For example, the kind `Type -> Type` represents a function from types to types, just like `List`. So the error here occurred because values are expected to have types with kind `Type`, but `List` has kind `Type -> Type`.
 
