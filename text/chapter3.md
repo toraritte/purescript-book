@@ -358,6 +358,59 @@ showAddress addr = addr.street <> ", " <>
 
 A function definition begins with the name of the function, followed by a list of argument names. The result of the function is specified after the equals sign. Fields are accessed with a dot, followed by the field name. In PureScript, string concatenation uses the diamond operator (`<>`), instead of the plus operator like in Javascript.
 
+> NOTE 2018-12-15_1352
+>
+> `<>` is defined in `Semigroup` as an alias for `append`:  
+> https://pursuit.purescript.org/packages/purescript-prelude/4.1.0/docs/Data.Semigroup#v:(%3C%3E)
+>
+> > ### `class Semigroup a where`
+> > The `Semigroup` type class identifies an associative operation on a type.
+> >
+> > Instances are required to satisfy the following law:
+> >
+> > + Associativity: (x <> y) <> z = x <> (y <> z)
+> >
+> > One example of a Semigroup is String, with (<>) defined as string concatenation.
+> >
+> > ### Members
+> > append :: a -> a -> a
+> >
+> > ### Instances
+> > + `Semigroup String`
+> > + `Semigroup Unit`
+> > + `Semigroup Void`
+> > + `(Semigroup s') => Semigroup (s -> s')`
+> > + `Semigroup (Array a)`
+> > + `(RowToList row list, SemigroupRecord list row row) => Semigroup {  | row }`
+> >
+> > #(<>)
+> > Operator alias for `Data.Semigroup.append` (right-associative / precedence 5)
+> >
+> https://github.com/purescript/purescript-prelude/blob/v4.1.0/src/Data/Semigroup.purs
+>
+> > ```purescript
+> > class Semigroup a where
+> >   append :: a -> a -> a
+> >
+> > infixr 5 append as <>
+> >
+> > instance semigroupString :: Semigroup String where
+> >   append = concatString
+> >
+> > -- (...)
+> > foreign import concatString :: String -> String -> String
+> >```
+>
+> https://github.com/purescript/purescript-prelude/blob/v4.1.0/src/Data/Semigroup.js
+>
+> > ```javascript
+> > exports.concatString = function (s1) {
+> >   return function (s2) {
+> >     return s1 + s2;
+> >   };
+> > };
+> > ```
+
 ## Test Early, Test Often
 
 The PSCi interactive mode allows for rapid prototyping with immediate feedback, so let's use it to verify that our first few functions behave as expected.
