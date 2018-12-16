@@ -686,6 +686,16 @@ forall a. List a -> Maybe a
 >   go Nothing x | p x = Just x
 >   go r _ = r
 > ```
+> or `filter`'s for that matter:
+> ```purescript
+> filter :: forall a. (a -> Boolean) -> List a -> List a
+> filter p = go Nil
+>   where
+>   go acc Nil = reverse acc
+>   go acc (x : xs)
+>     | p x = go (x : acc) xs
+>     | otherwise = go acc xs
+> ```
 
 Let's pick apart these two types to understand their meaning.
 
