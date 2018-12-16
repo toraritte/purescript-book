@@ -275,7 +275,7 @@ If we try to incorrectly define a value of type `List` (by using the type annota
 In a type-annotated expression x :: t, the type t must have kind Type
 ```
 
-> NOTE 2018-12-15_1342
+> **NOTE 2018-12-15_1342**
 >
 > But these will work:
 >
@@ -302,7 +302,7 @@ This is a _kind error_. Just like values are distinguished by their _types_, typ
 
 There is a special kind called `Type` which represents the kind of all types which have values, like `Number` and `String`.
 
-> NOTE 2018-12-15_1352
+> **NOTE 2018-12-15_1352**
 >
 > https://pursuit.purescript.org/builtins/docs/Prim#k:Type
 >
@@ -358,9 +358,9 @@ showAddress addr = addr.street <> ", " <>
 
 A function definition begins with the name of the function, followed by a list of argument names. The result of the function is specified after the equals sign. Fields are accessed with a dot, followed by the field name. In PureScript, string concatenation uses the diamond operator (`<>`), instead of the plus operator like in Javascript.
 
-> NOTE 2018-12-15_1352
+> **NOTE 2018-12-15_1357**
 >
-> `<>` is defined in `Semigroup` as an alias for `append`:  
+> `<>` is defined in `Semigroup` as an alias for `append`:
 > https://pursuit.purescript.org/packages/purescript-prelude/4.1.0/docs/Data.Semigroup#v:(%3C%3E)
 >
 > > ### `class Semigroup a where`
@@ -428,6 +428,15 @@ $ pulp repl
 
 > import Data.AddressBook
 ```
+
+> **NOTE 2018-12-15_2048**
+>
+> `pulp repl` will build the project by default, therefore `pulp build` is redundant, and the packages of the imported modules/functions still have to be installed with `psc-package`.
+>
+> **QUESTION**:
+> What is the best practice to not have to install each package manually?
+
+We can create an entry by using a record literal, which looks just like an anonymous object in JavaScript. Bind it to a name with a `let` expression:
 
 We can create an entry by using a record literal, which looks just like an anonymous object in JavaScript.
 
