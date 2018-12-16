@@ -225,6 +225,19 @@ example x y z = foo + bar
     bar = y * z
 ```
 
+> **NOTE 2018-12-15_2304**
+>
+> **QUESTION**: _So how come this is valid in `Data.Foldable`? Seems like a convention followed throughout the main libraries/packages._
+
+> https://github.com/purescript/purescript-foldable-traversable/blob/v4.1.1/src/Data/Foldable.purs#L366-L366
+> ```purescript
+> find :: forall a f. Foldable f => (a -> Boolean) -> f a -> Maybe a
+> find p = foldl go Nothing
+>   where
+>   go Nothing x | p x = Just x
+>   go r _ = r
+> ```
+
 Note how the declarations for `foo` and `bar` are indented past the declaration of `example`.
 
 The only exception to this rule is the `where` keyword in the initial `module` declaration at the top of a source file.
@@ -665,7 +678,7 @@ forall a. List a -> Maybe a
 >
 > Or use [`find` in `Data.List`](https://pursuit.purescript.org/packages/purescript-lists/5.3.0/docs/Data.List#v:find) (re-exported from `Data.Foldable`).
 >
-> **QUESTION**: Figure out its implementation below.
+> **QUESTION**: _Figure out its implementation below._
 > ```purescript
 > find :: forall a f. Foldable f => (a -> Boolean) -> f a -> Maybe a
 > find p = foldl go Nothing
