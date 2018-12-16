@@ -433,8 +433,7 @@ $ pulp repl
 >
 > `pulp repl` will build the project by default, therefore `pulp build` is redundant, and the packages of the imported modules/functions still have to be installed with `psc-package`.
 >
-> **QUESTION**:
-> What is the best practice to not have to install each package manually?
+> **QUESTION**: _What is the best practice to not have to install each package manually?_
 
 We can create an entry by using a record literal, which looks just like an anonymous object in JavaScript. Bind it to a name with a `let` expression:
 
@@ -469,6 +468,60 @@ Now let's write some utility functions for working with address books. We will n
 emptyBook :: AddressBook
 emptyBook = empty
 ```
+
+> **NOTE 2018-12-15_2107**
+>
+> **QUESTION**: _Why not simply `Nil`? Is it because `empty` is more generic and `Data.List` has a `Control.Plus` instance? But then why not simply use `mempty`, as it also has a `Monoid` instance?_
+>
+> ```text
+> > import Data.List
+> > import Data.Monoid
+> > import Control.Plus
+>
+> > (mempty) :: List Unit
+> Nil
+>
+> > (empty) :: List Unit
+> Nil
+> ```
+>
+> ---
+>
+> https://pursuit.purescript.org/packages/purescript-control/4.1.0/docs/Control.Plus#t:Plus
+>
+> > ### `class (Alt f) <= Plus f where`
+> > The `Plus` type class extends the `Alt` type class with a value that should be the left and right identity for `(<|>)`.
+> >
+> > It is similar to `Monoid`, except that it applies to types of kind `* -> *`, like `Array` or `List`, rather than concrete types like `String` or `Number`.
+> >
+> > `Plus` instances should satisfy the following laws:
+> >
+> >  + Left identity: empty <|> x == x
+> >  + Right identity: x <|> empty == x
+> >  + Annihilation: f <$> empty == empty
+> >
+> > ### Members
+> >
+> >  + `empty :: forall a. f a`
+> >
+> > ### Instances
+> >
+> >  + `Plus Array`
+> >  + `Plus List`
+>
+> https://github.com/purescript/purescript-lists/blob/3d864d1e5bf330921a44d76e02de825773993620/src/Data/List/Types.purs#L143
+>
+> > ```purescript
+> > instance plusList :: Plus List where
+> >   empty = Nil
+> > ```
+>
+> https://github.com/purescript/purescript-lists/blob/3d864d1e5bf330921a44d76e02de825773993620/src/Data/List/Types.purs#L66
+>
+> > ```purescript
+> > instance monoidList :: Monoid (List a) where
+> >   mempty = Nil
+> > ```
 
 We will also need a function for inserting a value into an existing address book. We will call this function `insertEntry`. Start by giving its type:
 
