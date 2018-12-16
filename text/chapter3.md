@@ -629,6 +629,17 @@ This process is called _eta conversion_, and can be used (along with some other 
 
 In the case of `insertEntry`, _eta conversion_ has resulted in a very clear definition of our function - "`insertEntry` is just cons on lists". However, it is arguable whether point-free form is better in general.
 
+> **NOTE 2018-12-15_2107**
+>
+> **QUESTION**: _What is eta conversion? (Refresh lambda calculus as well...)_
+>
+> Resources:
+>
+>  + https://wiki.haskell.org/Eta_conversion
+>  + (!) https://mail.haskell.org/pipermail/haskell-cafe/2010-December/087782.html
+>  + https://ncatlab.org/nlab/show/eta-conversion
+>  + https://math.stackexchange.com/questions/65622/whats-the-point-of-eta-conversion-in-lambda-calculus
+
 ## Querying the Address Book
 
 The last function we need to implement for our minimal address book application will look up a person by name and return the correct `Entry`. This will be a nice application of building programs by composing small functions - a key idea from functional programming.
