@@ -661,6 +661,19 @@ forall a. (a -> Boolean) -> List a -> List a
 forall a. List a -> Maybe a
 ```
 
+> **NOTE 2018-12-15_2248**
+>
+> Or use [`find` in `Data.List`](https://pursuit.purescript.org/packages/purescript-lists/5.3.0/docs/Data.List#v:find) (re-exported from `Data.Foldable`).
+>
+> **QUESTION**: Figure out its implementation below.
+> ```purescript
+> find :: forall a f. Foldable f => (a -> Boolean) -> f a -> Maybe a
+> find p = foldl go Nothing
+>   where
+>   go Nothing x | p x = Just x
+>   go r _ = r
+> ```
+
 Let's pick apart these two types to understand their meaning.
 
 `filter` is a curried function of two arguments. Its first argument is a function, which takes a list element and returns a `Boolean` value as a result. Its second argument is a list of elements, and the return value is another list.
