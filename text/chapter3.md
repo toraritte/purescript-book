@@ -686,7 +686,9 @@ forall a. List a -> Maybe a
 >   go Nothing x | p x = Just x
 >   go r _ = r
 > ```
-> or `filter`'s for that matter:
+>
+> _or `filter`'s for that matter:_
+>
 > ```purescript
 > filter :: forall a. (a -> Boolean) -> List a -> List a
 > filter p = go Nil
@@ -805,12 +807,43 @@ Either way, this gives a clear definition of the `findEntry` function: "`findEnt
 
 I will let you make your own decision which definition is easier to understand, but it is often useful to think of functions as building blocks in this way - each function executing a single task, and solutions assembled using function composition.
 
+> **NOTE 2018-12-18_1433**
+>
+> `<<<` is an alias for `compose` defined in [`Control.Semigroupoid`](https://pursuit.purescript.org/packages/purescript-prelude/4.1.0/docs/Control.Semigroupoid) that provides an instance for the [`Prim.Function`](https://pursuit.purescript.org/builtins/docs/Prim#t:Function) built-in data type by default.
+>
+> > A `Semigroupoid` is similar to a [`Category`](#category) but does not
+> > require an identity element `identity`, just composable morphisms.
+> >
+> > `Semigroupoid`s must satisfy the following law:
+> >
+> > - Associativity: `p <<< (q <<< r) = (p <<< q) <<< r`
+>
+> The type signature for `compose`:
+> ```text
+> forall b c d a. Semigroupoid a => a c d -> a b c -> a b d
+> ```
+>
+> From the [`Prim`](https://pursuit.purescript.org/builtins/docs/Prim) documentation:
+>
+> > `data Function :: Type -> Type -> Type`
+> >
+> > A function, which takes values of the type specified by the first type parameter, and returns values of the type specified by the second. In the JavaScript backend, this is a standard JavaScript Function.
+> >
+> > The type constructor `(->)` is syntactic sugar for this type constructor. It is recommended to use `(->)` rather than `Function`, where possible.
+> >
+> > That is, prefer **`f :: Number -> Number`** to either **`f :: Function Number Number`** or **`f :: (->) Number Number`**.
+>
+> Therefore by replacing `a` with the infix `->` in `compose`'s type signature, it can be rewritten into the "friendlier" form:
+> ```text
+> (c -> d) -> (b -> c) -> (b -> d)
+> ```
+
 ## Exercises
 
  1. (Easy) Test your understanding of the `findEntry` function by writing down the types of each of its major subexpressions. For example, the type of the `head` function as used is specialized to `AddressBook -> Maybe Entry`.
- 1. (Medium) Write a function which looks up an `Entry` given a street address, by reusing the existing code in `findEntry`. Test your function in PSCi.
- 1. (Medium) Write a function which tests whether a name appears in a `AddressBook`, returning a Boolean value. _Hint_: Use PSCi to find the type of the `Data.List.null` function, which test whether a list is empty or not.
- 1. (Difficult) Write a function `removeDuplicates` which removes duplicate address book entries with the same first and last names. _Hint_: Use PSCi to find the type of the `Data.List.nubBy` function, which removes duplicate elements from a list based on an equality predicate.
+ 2. (Medium) Write a function which looks up an `Entry` given a street address, by reusing the existing code in `findEntry`. Test your function in PSCi.
+ 3. (Medium) Write a function which tests whether a name appears in a `AddressBook`, returning a Boolean value. _Hint_: Use PSCi to find the type of the `Data.List.null` function, which test whether a list is empty or not.
+ 4. (Difficult) Write a function `removeDuplicates` which removes duplicate address book entries with the same first and last names. _Hint_: Use PSCi to find the type of the `Data.List.nubBy` function, which removes duplicate elements from a list based on an equality predicate.
 
 ## Conclusion
 
