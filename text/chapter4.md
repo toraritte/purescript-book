@@ -83,6 +83,18 @@ This example is obviously a very impractical way to find the length of an array 
  1. (Easy) Write a recursive function which returns `true` if and only if its input is an even integer.
  2. (Medium) Write a recursive function which counts the number of even integers in an array. _Hint_: the function `head` (also available in `Data.Array`) can be used to find the first element in a non-empty array.
 
+> **TODO 2019-09-23_0620**
+>
+> The latest  version of  Dustin's repo has  the above
+> exercise descriptions,  but I  thought that  my repo
+> was up to date and it had the one below. Figure out.
+>
+> > 2. (Medium) Write a recursive function which counts the
+> >    number  of even  integers in  an array.  _Hint_: the
+> >    function `unsafePartial head`  (where `head` is also
+> >    imported from  `Data.Array.Partial`) can be  used to
+> >    find the first element in a non-empty array.
+
 ## Maps
 
 The `map` function is an example of a recursive function on arrays. It is used to transform the elements of an array by applying a function to each element in turn. Therefore, it changes the _contents_ of the array, but preserves its _shape_ (i.e. its length).
@@ -650,7 +662,7 @@ Try out the new version in PSCi - you should get the same result. I'll let you d
      ```text
      > whereIs "/bin/ls"
      Just (/bin/)
-     
+
      > whereIs "/bin/cat"
      Nothing
      ```
