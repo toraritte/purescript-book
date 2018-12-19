@@ -1,0 +1,14 @@
+{
+  "name": "chapter3",
+  "set": "psc-0.12.1",
+  "source": "https://github.com/purescript/package-sets.git",
+  "depends": [
+    "maybe",
+    "lists",
+    "control",
+    "psci-support",
+    "console",
+    "effect",
+    "prelude"
+  ]
+}
