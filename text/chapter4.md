@@ -101,6 +101,45 @@ The `map` function is an example of a recursive function on arrays. It is used t
 
 When we cover _type classes_ later in the book we will see that the `map` function is an example of a more general pattern of shape-preserving functions which transform a class of type constructors called _functors_.
 
+> <a id="note2018-12-19_2055">**NOTE 2018-12-19_2055**</a>
+>
+> [`Data.Functor`](https://pursuit.purescript.org/packages/purescript-prelude/4.1.0/docs/Data.Functor#t:Functor):
+> > A `Functor` is a type constructor which supports a mapping operation
+> > `map`.
+> >
+> > `map` can be used to turn functions `a -> b` into functions
+> > `f a -> f b` whose argument and return types use the type constructor `f`
+> > to represent some computational context.
+> >
+> > Instances must satisfy the following laws:
+> >
+> > - Identity: `map identity = identity`
+> > - Composition: `map (f <<< g) = map f <<< map g`
+> >
+> > **Members**
+> >
+> > `map :: forall a b. (a -> b) -> f a -> f b`
+> >
+> > **Instances**
+> >
+> >  + `Functor (Function r)`
+> >  + `Functor Array`
+>
+> So `Function` (aka `->`) is also a functor and [its `Functor` instance](https://github.com/purescript/purescript-prelude/blob/v4.1.0/src/Data/Functor.purs#L39) is simply defined as
+> ```purescript
+> instance functorFn :: Functor ((->) r) where
+>   map = compose
+> ```
+> where `compose` is from [`Control.Semigroupoid`](https://pursuit.purescript.org/packages/purescript-prelude/4.1.0/docs/Control.Semigroupoid) (see [NOTE 2018-12-18_1433](https://github.com/toraritte/purescript-book/blob/practice/text/chapter3.md#user-content-note2018-12-18_1433)), although it is imported from `Data.Function` (see [source](https://github.com/purescript/purescript-prelude/blob/v4.1.0/src/Data/Functor.purs#L10)).
+>
+> `Function` is a built in data type from [`Prim`](https://pursuit.purescript.org/builtins/docs/Prim) ([source@v0.12.1](https://github.com/purescript/purescript/blob/v0.12.1/src/Language/PureScript/Docs/Prim.hs)), whereas [`Data.Function`](https://pursuit.purescript.org/packages/purescript-prelude/4.1.0/docs/Data.Function) is a module in `Prelude`, and it [re-exports `compose` from `Control.Category`](https://github.com/purescript/purescript-prelude/blob/v4.1.0/src/Data/Function.purs#L11).
+>
+> With [`Control.Category`](https://pursuit.purescript.org/packages/purescript-prelude/4.1.0/docs/Control.Category) being a `Semigroupoid` with an identity element, we have come full circle as `compose` is a re-export from `Control.Semigroupoid`. `Control.Category` is also a category because it fulfills all the requirements. From [Bartosz Milewski's Category Theory for Programmers](https://github.com/hmemcpy/milewski-ctfp-pdf):
+>
+> >  + A category consists of objects and arrows (morphisms).
+> >  + Arrows can be composed, and the composition is associative.
+> >  + Every object has an identity arrow that serves as a unit under composition.
+
 Let's try out the `map` function in PSCi:
 
 ```text
@@ -561,6 +600,18 @@ Writing `reverse` in terms of `foldl` will be left as an exercise for the reader
  1. (Easy) Use `foldl` to test whether an array of boolean values are all true.
  2. (Medium) Characterize those arrays `xs` for which the function `foldl (==) false xs` returns true.
  3. (Medium) Rewrite the `fib` function in tail recursive form using an accumulator parameter:
+
+    ```haskell
+    import Prelude
+    import Data.Array.Partial (head, tail)
+
+    count :: forall a. (a -> Boolean) -> Array a -> Int
+    count _ [] = 0
+    count p xs = if p (unsafePartial head xs)
+                   then count p (unsafePartial tail xs) + 1
+                   else count p (unsafePartial tail xs)
+    ```
+
  4. (Medium) Write `reverse` in terms of `foldl`.
 
 ## A Virtual Filesystem
@@ -656,8 +707,8 @@ Try out the new version in PSCi - you should get the same result. I'll let you d
  ## Exercises
 
  1. (Easy) Write a function `onlyFiles` which returns all _files_ (not directories) in all subdirectories of a directory.
- 1. (Medium) Write a fold to determine the largest and smallest files in the filesystem.
- 1. (Difficult) Write a function `whereIs` to search for a file by name. The function should return a value of type `Maybe Path`, indicating the directory containing the file, if it exists. It should behave as follows:
+ 2. (Medium) Write a fold to determine the largest and smallest files in the filesystem.
+ 3. (Difficult) Write a function `whereIs` to search for a file by name. The function should return a value of type `Maybe Path`, indicating the directory containing the file, if it exists. It should behave as follows:
 
      ```text
      > whereIs "/bin/ls"
