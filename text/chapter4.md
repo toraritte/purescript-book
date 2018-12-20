@@ -152,6 +152,121 @@ $ pulp repl
 
 Notice how `map` is used - we provide a function which should be "mapped over" the array in the first argument, and the array itself in its second.
 
+> **NOTE 2018-12-20_1254**
+>
+> ## How does `Data.Functor.flap` work?
+>
+> According to the [documentation](https://pursuit.purescript.org/packages/purescript-prelude/4.1.0/docs/Data.Functor#v:flap):
+>
+> > `flap :: forall f a b. Functor f => f (a -> b) -> a -> f b`
+> >
+> >  + Apply a value in a computational context to a value in no context.
+> >  + Generalizes flip.
+>
+> ### Example 1
+>
+> > ```purescript
+> > longEnough :: String -> Bool
+> > hasSymbol :: String -> Bool
+> > hasDigit :: String -> Bool
+> > password :: String
+> >
+> > validate :: String -> Array Bool
+> > validate = flap [longEnough, hasSymbol, hasDigit]
+> > ```
+>
+> This is easy to understand as it is basically a `map` over an array. `flap` is implemented ([source](https://github.com/purescript/purescript-prelude/blob/7a691ce2658bd8eaf28439391e29506dd154fb3d/src/Data/Functor.purs#L93-L93)) as
+>
+> ```purescript
+> flap :: forall f a b. Functor f => f (a -> b) -> a -> f b
+> flap ff x = map (\f -> f x) ff
+> ```
+>
+> so `map`'s first argument is a closure on the "*value in no context*" (`x` above, or `password` in the example) that will apply all the functions from `ff` (which is an `Array (String -> Boolean)`) over that value.
+>
+> ### Example 2
+>
+> > ```purescript
+> > flap (-) 3 4 == 1
+> > ```
+>
+> A function is a functor, and [its `Functor` instance](https://github.com/purescript/purescript-prelude/blob/v4.1.0/src/Data/Functor.purs#L39) is simply defined as
+>
+>     instance functorFn :: Functor ((->) r) where
+>       map = compose
+>
+> where `compose` is after jumping through all the hoops (see [NOTE 2018-12-19_2055](https://github.com/toraritte/purescript-book/blob/practice/text/chapter4.md#user-content-note2018-12-19_2055))
+>
+>     instance semigroupoidFn :: Semigroupoid (->) where
+>       compose f g x = f (g x)
+>
+> So
+>
+> ```text
+> flap (-) 3 4
+>     |
+>     V
+> (map (\f -> f 3) (-)) 4
+>     |
+>     | map = compose
+>     |
+>     V
+> (compose (\f -> f 3) (-)) 4
+>     |
+>     | compose = <<<
+>     |
+>     V
+> ((\f -> f 3) <<< (-)) 4
+>     |
+>     | (-) = a - b
+>     |
+>     V
+> ((\f -> f 3) <<< (\a b -> a - b)) 4
+>     |
+>     | (f <<< g) x = f (g x)
+>     |
+>     V
+> (\f -> f 3) ((\a b -> a - b) 4)
+> ```
+>
+> This would also explain why `flap (-)`'s type signature is `a -> a -> a`.
+>
+> ```text
+> > :type flap (-)
+> forall a. Ring a => a -> a -> a
+>
+> > :type (\x y -> (\f -> f x) ((\a b -> a - b) y))
+> forall a. Ring a => a -> a -> a
+> ```
+>
+> **How `flap` flips the arguments**
+>
+> Continuing from above:
+>
+> ```text
+> (\f -> f 3) ((\a b -> a - b) 4)
+>     |
+>     V
+> (\f -> f 3) (\b -> 4 - b)
+>     |
+>     V
+> (\b -> 4 -b) 3
+>     |
+>     V
+> 4 - 3
+> ```
+>
+> ### Example 3
+>
+> ```purescript
+> threeve <$> Just 1 <@> 'a' <*> Just true == Just (threeve 1 'a' true)
+> ```
+>
+> Apparently `threeve` is only a placeholder name such as `foo`, `bar` et al.
+>
+> **QUESTION**: Interpret this example.
+
+
 ## Infix Operators
 
 The `map` function can also be written between the mapping function and the array, by wrapping the function name in backticks:
