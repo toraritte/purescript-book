@@ -807,7 +807,7 @@ Either way, this gives a clear definition of the `findEntry` function: "`findEnt
 
 I will let you make your own decision which definition is easier to understand, but it is often useful to think of functions as building blocks in this way - each function executing a single task, and solutions assembled using function composition.
 
-> **NOTE 2018-12-18_1433**
+> <a id="note2018-12-18_1433">**NOTE 2018-12-18_1433**</a>
 >
 > `<<<` is an alias for `compose` defined in [`Control.Semigroupoid`](https://pursuit.purescript.org/packages/purescript-prelude/4.1.0/docs/Control.Semigroupoid) that provides an instance for the [`Prim.Function`](https://pursuit.purescript.org/builtins/docs/Prim#t:Function) built-in data type by default.
 >
