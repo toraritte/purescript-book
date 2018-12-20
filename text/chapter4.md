@@ -355,11 +355,11 @@ For example, suppose we wanted to compute an array of all numbers between 1 and 
 [2,4,6,8,10]
 ```
 
- ## Exercises
+## Exercises
 
- 1. (Easy) Use the `map` or `<$>` function to write a function which calculates the squares of an array of numbers.
- 1. (Easy) Use the `filter` function to write a function which removes the negative numbers from an array of numbers.
- 1. (Medium) Define an infix synonym `<$?>` for `filter`. Rewrite your answer to the previous question to use your new operator. Experiment with the precedence level and associativity of your operator in PSCi.
+1. (Easy) Use the `map` or `<$>` function to write a function which calculates the squares of an array of numbers.
+2. (Easy) Use the `filter` function to write a function which removes the negative numbers from an array of numbers.
+3. (Medium) Define an infix synonym `<$?>` for `filter`. Rewrite your answer to the previous question to use your new operator. Experiment with the precedence level and associativity of your operator in PSCi.
 
 ## Flattening Arrays
 
