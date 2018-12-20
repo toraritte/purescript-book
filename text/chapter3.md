@@ -837,6 +837,11 @@ I will let you make your own decision which definition is easier to understand, 
 > ```text
 > (c -> d) -> (b -> c) -> (b -> d)
 > ```
+> For completeness' sake, [function's `Semigroupoid` instance](https://github.com/purescript/purescript-prelude/blob/v4.1.0/src/Control/Semigroupoid.purs):
+> ```purescript
+> instance semigroupoidFn :: Semigroupoid (->) where
+>   compose f g x = f (g x)
+> ```
 
 ## Exercises
 
