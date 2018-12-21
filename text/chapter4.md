@@ -498,7 +498,24 @@ Excellent! We've managed to find the correct set of factor pairs without duplica
 
 ## Do Notation
 
-However, we can improve the readability of our code considerably. `map` and `concatMap` are so fundamental, that they (or rather, their generalizations `map` and `bind`) form the basis of a special syntax called _do notation_.
+However, we can improve the readability of our code considerably. **`map` and `concatMap` are so fundamental, that they (or rather, their generalizations `map` and `bind`) form the basis of a special syntax called _do notation_**.
+
+> **NOTE 2018-12-21_1315**
+>
+> ```text
+> > :type bind
+> forall a b m. Bind m => m a -> (a -> m b) -> m b
+>
+> > :type concatMap
+> forall a b. (a -> Array b) -> Array a -> Array b
+> ```
+>
+> From [`Data.Array.concatMap` source](https://github.com/purescript/purescript-arrays/blob/v5.2.0/src/Data/Array.purs#L577-L577):
+>
+> ```purescript
+> concatMap :: forall a b. (a -> Array b) -> Array a -> Array b
+> concatMap = flip bind
+> ```
 
 _Note_: Just like `map` and `concatMap` allowed us to write _array comprehensions_, the more general operators `map` and `bind` allow us to write so-called _monad comprehensions_. We'll see plenty more examples of _monads_ later in the book, but in this chapter, we will only consider arrays.
 
