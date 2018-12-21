@@ -694,8 +694,20 @@ Depending on the application, you might prefer to use `guard` instead of a `filt
 
 > **NOTE 2018-12-21_1325**
 >
-> ```
-> pattern
+> There is a pattern here, but no clue where this is useful. (applicatives?...)
+>
+> ```text
+> > import Prelude
+> > import Data.Array
+>
+> > f n = concatMap (\i -> map (\j -> [i,j]) (1 .. n)) (1 .. n)
+> > f 2
+> [[1,1],[1,2],[2,1],[2,2]]
+>
+> > g n = concatMap (\i -> concatMap (\j -> map (\k -> [i,j,k]) (1 .. n)) (1 .. n)) (1 .. n)
+> > g 2
+> [[1,1,1],[1,1,2],[1,2,1],[1,2,2],[2,1,1],[2,1,2],[2,2,1],[2,2,2]]
+>
 > ```
 
 4. (Difficult) Write a function `factorizations` which produces all _factorizations_ of an integer `n`, i.e. arrays of integers whose product is `n`. _Hint_: for an integer greater than 1, break the problem down into two subproblems: finding the first factor, and finding the remaining factors.
