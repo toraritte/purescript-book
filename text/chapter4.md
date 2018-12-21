@@ -476,9 +476,9 @@ factors n = filter (\xs -> product xs == n) $ do
 
 The keyword `do` introduces a block of code which uses do notation. The block consists of expressions of a few types:
 
-- Expressions which bind elements of an array to a name. These are indicated with the backwards-facing arrow `<-`, with a name on the left, and an expression on the right whose type is an array.
-- Expressions which do not bind elements of the array to names. The last line `pure [i, j]` is an example of this kind of expression.
-- Expressions which give names to expressions, using the `let` keyword.
+- **Expressions which bind elements of an array to a name.** These are indicated with the backwards-facing arrow `<-`, with a name on the left, and an expression on the right whose type is an array.
+- **Expressions which do not bind elements of the array to names.** The last line `pure [i, j]` is an example of this kind of expression.
+- **Expressions which give names to expressions, using the `let` keyword.**
 
 This new notation hopefully makes the structure of the algorithm clearer. If you mentally replace the arrow `<-` with the word "choose", you might read it as follows: "choose an element `i` between 1 and n, then choose an element `j` between `i` and `n`, and return `[i, j]`".
 
@@ -488,6 +488,16 @@ In the last line, we use the `pure` function. This function can be evaluated in 
 > pure [1, 2] :: Array (Array Int)
 [[1, 2]]
 ```
+
+> **NOTE 2018-12-20_2118**
+> ```text
+> > :paste
+> … lofa :: Int -> Array Int
+> … lofa i = pure i
+> … 
+> > lofa 7
+> [7]
+> ```
 
 In the case of arrays, `pure` simply constructs a singleton array. In fact, we could modify our `factors` function to use this form, instead of using `pure`:
 
