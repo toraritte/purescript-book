@@ -443,6 +443,34 @@ This is looking better. However, we are generating too many pairs: we keep both 
 [[1,1],[1,2],[1,3],[2,2],[2,3],[3,3]]
 ```
 
+> **NOTE 2018-12-21_0733**
+>
+> ```text
+> concatMap (\i -> map (\j -> [i, j]) (i .. n)) (1 .. n)
+>   |
+>   | n = 3
+>   |
+>   V
+> concatMap (\i -> map (\j -> [i, j]) (i .. 3)) (1 .. 3)
+>
+> concatMap (\i -> map (\j -> [i, j]) (i .. 3)) [1,2,3]
+>
+>           (\1 -> map (\j -> [1, j]) (1 .. 3)
+>           (\1 -> map (\j -> [1, j]) [1,2,3]
+>                      (\1 -> [1, 1]) ------------> [1, 1]
+>                      (\2 -> [1, 2]) ------------> [1, 2]
+>                      (\3 -> [1, 3]) ------------> [1, 3]
+>
+>           (\2 -> map (\j -> [2, j]) (2 .. 3)
+>           (\2 -> map (\j -> [2, j]) [2,3]
+>                      (\2 -> [2, 2]) -----------> [2, 2]
+>                      (\3 -> [2, 3]) -----------> [2, 3]
+>
+>           (\3 -> map (\j -> [3, j]) (3 .. 3)
+>           (\3 -> map (\j -> [3, j]) [3]
+>                      (\3 -> [3, 3]) -----------> [3, 3]
+> ```
+
 Great! Now that we have all of the pairs of potential factors, we can use `filter` to choose the pairs which multiply to give `n`:
 
 ```text
@@ -615,7 +643,7 @@ That is, if `guard` is passed an expression which evaluates to `true`, then it r
 
 This means that
 
-> ### if the guard fails, then the current branch of the array comprehension will terminate early with no results. 
+> ### if the guard fails, then the current branch of the array comprehension will terminate early with no results.
 >
 > That is, ***a call to* `guard` *is equivalent to using* `filter` *on the intermediate array***.
 
