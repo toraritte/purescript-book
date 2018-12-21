@@ -489,16 +489,6 @@ In the last line, we use the `pure` function. This function can be evaluated in 
 [[1, 2]]
 ```
 
-> **NOTE 2018-12-20_2118**
-> ```text
-> > :paste
-> … lofa :: Int -> Array Int
-> … lofa i = pure i
-> …
-> > lofa 7
-> [7]
-> ```
-
 In the case of arrays, `pure` simply constructs a singleton array. In fact, we could modify our `factors` function to use this form, instead of using `pure`:
 
 ```haskell
@@ -563,15 +553,61 @@ For our purposes, the following calculations tell us everything we need to know 
 >
 > **QUESTION**: How to reason about `Unit`? Why can't it be printed, only indirectly (with `length` for example)?
 >
+> **(AN) ANSWER**: It can be. See `Data.List` examples below.
+>
 > From the [`Unit` documentation](https://pursuit.purescript.org/packages/purescript-prelude/4.1.0/docs/Data.Unit#t:Unit):
 >
-> > ### `data Unit :: Type`
+> > #### `data Unit :: Type`
 > >
 > > The Unit type has a single inhabitant, called unit. It represents values with no computational content.
 > >
 > > Unit is often used, wrapped in a monadic type constructor, as the return type of a computation where only the effects are important.
 >
-> `guard` certainly is a good example here with its type signature `MonadZero m => Boolean -> m Unit`.
+> `guard`'s return value is certainly is a good example here (`MonadZero m => Boolean -> m Unit`), and both `Array` and `List` are monadic type constructors. (E.g., see [`Data.List`'s `Monad` instance](https://github.com/purescript/purescript-lists/blob/v5.3.0/src/Data/List/Types.purs#L138).)
+
+> ```text
+> > import Data.List
+> > import Control.MonadZero
+> > import Prelude
+>
+> > length $ guard true
+> 1
+>
+> > guard true :: List Unit
+> (unit : Nil)
+>
+> > length $ guard false
+> 0
+>
+> > guard false :: List Unit
+> Nil
+> ```
+>
+> ---
+>
+> #### [Implementation of `Control.MonadZero.guard`](https://github.com/purescript/purescript-control/blob/8af53eea4ecc7b185776a0f144bcd7106ed08eb1/src/Control/MonadZero.purs#L54-L54)
+>
+> ```purescript
+> guard :: forall m. MonadZero m => Boolean -> m Unit
+> guard true = pure unit
+> guard false = empty
+> ```
+>
+> As far as I understand, `pure` "wraps" (Lifts?) values without context, depending on the provided type annotation. See subsequent NOTEs; haven't gone into it much yet.
+>
+> ```text
+> > :type pure
+> forall a f. Applicative f => a -> f a
+>
+> > :paste
+> … lofa :: Int -> Array Int
+> … lofa i = pure i
+> …
+> > lofa 7
+> [7]
+> ```
+>
+> For `empty` see [NOTE 2018-12-15_2107](https://github.com/toraritte/purescript-book/blob/practice/text/chapter3.md#user-content-note2018-12-15_2107).
 
 That is, if `guard` is passed an expression which evaluates to `true`, then it returns an array with a single element. If the expression evaluates to `false`, then its result is empty.
 
