@@ -508,6 +508,16 @@ The keyword `do` introduces a block of code which uses do notation. The block co
 - **Expressions which do not bind elements of the array to names.** The last line `pure [i, j]` is an example of this kind of expression.
 - **Expressions which give names to expressions, using the `let` keyword.**
 
+> **NOTE 2018-12-21_0752**
+>
+> **QUESTION**: _How is `do` notation implemented?_
+>
+> It is a keyword of the language, that is clear. Some resources:
+>
+>  + https://www.google.com/search?q=purescript+do+notation&oq=purescript+do+notation
+>  + https://github.com/purescript/purescript/issues/2435
+>  + https://github.com/purescript/purescript/issues/2749
+
 This new notation hopefully makes the structure of the algorithm clearer. If you mentally replace the arrow `<-` with the word "choose", you might read it as follows: "choose an element `i` between 1 and n, then choose an element `j` between `i` and `n`, and return `[i, j]`".
 
 In the last line, we use the `pure` function. This function can be evaluated in PSCi, but we have to provide a type:
