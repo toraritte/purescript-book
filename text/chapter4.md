@@ -691,6 +691,13 @@ Depending on the application, you might prefer to use `guard` instead of a `filt
 1. (Easy) Use the `factors` function to define a function `isPrime` which tests if its integer argument is prime or not.
 2. (Medium) Write a function which uses do notation to find the _cartesian product_ of two arrays, i.e. the set of all pairs of elements `a`, `b`, where `a` is an element of the first array, and `b` is an element of the second.
 3. (Medium) A _Pythagorean triple_ is an array of numbers `[a, b, c]` such that `a² + b² = c²`. Use the `guard` function in an array comprehension to write a function `triples` which takes a number `n` and calculates all Pythagorean triples whose components are less than `n`. Your function should have type `Int -> Array (Array Int)`.
+
+> **NOTE 2018-12-21_1325**
+>
+> ```
+> pattern
+> ```
+
 4. (Difficult) Write a function `factorizations` which produces all _factorizations_ of an integer `n`, i.e. arrays of integers whose product is `n`. _Hint_: for an integer greater than 1, break the problem down into two subproblems: finding the first factor, and finding the remaining factors.
 
 ## Folds
