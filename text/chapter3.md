@@ -482,7 +482,7 @@ emptyBook :: AddressBook
 emptyBook = empty
 ```
 
-> **NOTE 2018-12-15_2107**
+> <a id="note2018-12-15_2107">**NOTE 2018-12-15_2107**</a>
 >
 > **QUESTION**: _Why not simply `Nil`? Is it because `empty` is more generic and `Data.List` has a `Control.Plus` instance? But then why not simply use `mempty`, as it also has a `Monoid` instance?_
 >
