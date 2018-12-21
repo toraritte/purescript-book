@@ -494,7 +494,7 @@ In the last line, we use the `pure` function. This function can be evaluated in 
 > > :paste
 > … lofa :: Int -> Array Int
 > … lofa i = pure i
-> … 
+> …
 > > lofa 7
 > [7]
 > ```
@@ -552,6 +552,26 @@ For our purposes, the following calculations tell us everything we need to know 
 > length $ guard false
 0
 ```
+
+> **NOTE 2018-12-20_2150**
+>
+> It also works for `Data.List.length` as it has [a `MonadZero` instance](https://github.com/purescript/purescript-lists/blob/3566228d6d3583e5d0780a9a78395ae41c7c3ce2/src/Data/List/Types.purs#L148):
+>
+> ```purescript
+> instance monadZeroList :: MonadZero List
+> ```
+>
+> **QUESTION**: How to reason about `Unit`? Why can't it be printed, only indirectly (with `length` for example)?
+>
+> From the [`Unit` documentation](https://pursuit.purescript.org/packages/purescript-prelude/4.1.0/docs/Data.Unit#t:Unit):
+>
+> > ### `data Unit :: Type`
+> >
+> > The Unit type has a single inhabitant, called unit. It represents values with no computational content.
+> >
+> > Unit is often used, wrapped in a monadic type constructor, as the return type of a computation where only the effects are important.
+>
+> `guard` certainly is a good example here with its type signature `MonadZero m => Boolean -> m Unit`.
 
 That is, if `guard` is passed an expression which evaluates to `true`, then it returns an array with a single element. If the expression evaluates to `false`, then its result is empty.
 
