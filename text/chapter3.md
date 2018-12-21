@@ -497,6 +497,38 @@ emptyBook = empty
 > > (empty) :: List Unit
 > Nil
 > ```
+> **(AN) ANSWER**: In short, `empty` would evaluate simply to `Nil` in the case of lists as [its `Control.Plus` instance](https://github.com/purescript/purescript-lists/blob/3566228d6d3583e5d0780a9a78395ae41c7c3ce2/src/Data/List/Types.purs#L143) is
+>
+> ```purescript
+> instance plusList :: Plus List where
+>   empty = Nil
+> ```
+>
+> + `Semigroup` and `Monoid` are defined for _types_ (kind `✱`), whereas
+> + `Alt` and `Plus` are for _type constructors_ (kind `✱ -> ✱`).
+>
+> They provide the same assurances as well:
+>
+> ```text
+>                         Semigroup | Alt
+>                         --------- | ---
+> associative operation   append    | alt
+>         on              types     | type constructors
+>
+>                         Monoid | Plus
+>                         ------ | ----
+>      identity element   mempty | empty
+>              on         types  | type constructors
+> ```
+>
+> `Semigroup` and `Monoid` are the most general type classes which notion is seemingly proved by [`Data.List`'s `Alt` instance](https://github.com/purescript/purescript-lists/blob/3566228d6d3583e5d0780a9a78395ae41c7c3ce2/src/Data/List/Types.purs#L140):
+>
+> ```purescript
+> instance altList :: Alt List where
+>   alt = append
+> ```
+>
+> (Would other instances corroborate this?)
 >
 > ---
 >
