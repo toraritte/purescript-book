@@ -87,6 +87,11 @@ isPrime n = (length $ factors n) == 1
 --    set of all pairs of  elements `a`, `b`, where `a` is
 --    an element of the first array, and `b` is an element
 --    of the second.
+cartesianProduct :: Array Int -> Array Int -> Array (Array Int)
+cartesianProduct as bs = do
+  i <- as
+  j <- bs
+  pure [i,j]
 
 -- 3. (Medium)  A  _Pythagorean  triple_ is  an  array  of
 --    numbers `[a,  b, c]` such that  `a² + b² =  c²`. Use
@@ -95,6 +100,20 @@ isPrime n = (length $ factors n) == 1
 --    `n`  and calculates  all  Pythagorean triples  whose
 --    components are  less than `n`. Your  function should
 --    have type `Int -> Array (Array Int)`.
+pythagoreanTriple :: Int -> Array (Array Int)
+pythagoreanTriple n = do
+  i <- 1 .. n
+  j <- 1 .. n
+  k <- 1 .. n
+  guard $ (i*i + j*j) == (k*k)
+  pure [i,j,k]
+
+pythagoreanTriple' :: Int -> Array (Array Int)
+pythagoreanTriple' n = filter (unsafePartial tripleCheck) $
+  concatMap (\i -> concatMap (\j -> map (\k -> [i,j,k]) (1 .. n)) (1 .. n)) (1 .. n)
+  where
+    tripleCheck :: Partial => Array Int -> Boolean
+    tripleCheck [i,j,k] = (i*i + j*j) == (k*k)
 
 -- 4. (Difficult) Write a  function `factorizations` which
 --    produces  all _factorizations_  of  an integer  `n`,
